@@ -29,18 +29,19 @@ if ($mysqli -> connect_errno) {
     echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
     exit();
   }
-  
+
   // Perform query
   if ($result = $mysqli -> query("SELECT * FROM todos order by id desc")) {
      while($todo=$result->fetch_object()){
          echo "<li class='list-group-item'>";
-         echo $todo->todo_item;
+          echo htmlspecialchars($todo->todo_item, ENT_QUOTES, 'UTF-8');
+         //echo $todo->todo_item;
          echo "</li>";
      }
     // Free result set
     $result -> free_result();
   }
-  
+
   $mysqli -> close();
 
 ?>
@@ -51,7 +52,7 @@ if ($mysqli -> connect_errno) {
 $(document).ready(function(){
   $("#todoclick").click(function(){
     $todo=$("#todotext").val();
-    // $.get('addtodo.php', { todo: $todo}, 
+    // $.get('addtodo.php', { todo: $todo},
     // function(returnedData){
     //       if(returnedData==="ok"){
     //         $("#tlist").prepend("<li class='list-group-item'> "+$todo+"</li>");
